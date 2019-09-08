@@ -2,6 +2,7 @@
 // Created by leo on 2/5/19.
 //
 
+#include <string.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -48,6 +49,30 @@ int KcpServer::initUdpTunnel()
 	return fd;
 }
 
+void KcpServer::onDeadSessionNotity()
+{
+	char buf[32] = {0};
+	sockaddr_in remote;
+	socklen_t remoteLen = sizeof(remote);
+	ssize_t bytes = recvfrom(udpServer_, buf, sizeof(buf), 0, (sockaddr*)&remote, &remoteLen);
+	if(bytes == 8)
+	{
+		uint32_t deadSessId = ntohl(*(uint32_t*)(buf + 4));
+		KcpServerSessionMap::iterator it = sessionMap_.find(deadSessId);
+		if(it != sessionMap_.end())
+		{
+			const sockaddr_in* peer = it->second->getTunnelPeer();
+			if(0 == memcmp(&peer->sin_addr, &remote.sin_addr, sizeof(remote.sin_addr)) &&
+					peer->sin_port == remote.sin_port)
+			{
+        LOG_INFO << "erase dead session: " << deadSessId;
+        it->second->disconnectFromSvr();
+				sessionMap_.erase(it);
+			}
+		}
+	}
+}
+
 void KcpServer::onUdpTunnelReadable(Timestamp)
 {
 	char buf[4] = {0};
@@ -61,12 +86,20 @@ void KcpServer::onUdpTunnelReadable(Timestamp)
 	}
 
 	IUINT32 id = ikcp_getconv(buf);
+	if(id == 0)
+	{
+		onDeadSessionNotity();
+		return;
+	}
+
 	LOG_INFO << "recv packet from " << id;
 
 	auto it = sessionMap_.find(id);
 	if(it == sessionMap_.end())
 	{
-		sessionMap_[id] = make_shared<KcpServerSession>(&loop_, id);
+		KcpServerSessionPtr sess = make_shared<KcpServerSession>(&loop_, id);
+		sess->connectSvr();
+		sessionMap_[id] = sess;
 	}
 
 	sessionMap_[id]->recvFromTunnel();
@@ -88,6 +121,7 @@ void KcpServer::onCheckDeadSessionTimer()
 		auto cur = it++;
 		if(cur->second->isDead())
 		{
+			cur->second->disconnectFromSvr();
 			sessionMap_.erase(cur);
 		}
 	}

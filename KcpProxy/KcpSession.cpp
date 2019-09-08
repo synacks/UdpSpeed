@@ -24,7 +24,11 @@ IUINT32 iclock()
 KcpSession::KcpSession(TcpConnectionRef ref)
 	: conn_(ref)
 {
-	id_ = s_sessId++;
+	if(++s_sessId == 0)
+	{
+		++s_sessId;
+	}
+	id_ = s_sessId;
 	kcp_ = ikcp_create(id_, nullptr);
 	ikcp_setoutput(kcp_, &KcpTunnel::output);
 	ikcp_nodelay(kcp_, 1, 10, 1, 1);
@@ -32,6 +36,12 @@ KcpSession::KcpSession(TcpConnectionRef ref)
 
 KcpSession::~KcpSession()
 {
+	int remainBytes = ikcp_peeksize(kcp_);
+	if(remainBytes > 0)
+	{
+		LOG_WARN << remainBytes << " bytes data left in kcp object!";
+	}
+
 	ikcp_flush(kcp_);
 	ikcp_release(kcp_);
 }
@@ -47,10 +57,13 @@ void KcpSession::sendToTunnel(const void *data, size_t len)
 	if(ret != 0)
 	{
 		LOG_ERROR << "ikcp_send failed, ret: " << ret;
+		return;
 	}
+
+	LOG_INFO << "A -> B, bytes: " << len;
 }
 
-bool KcpSession::recvFromTunnel(const std::string &input, string &output)
+bool KcpSession::recvFromTunnel(const std::string &input)
 {
 	int inputRet = ikcp_input(kcp_, input.data(), (long)input.length());
 	if(inputRet < 0)
@@ -63,20 +76,19 @@ bool KcpSession::recvFromTunnel(const std::string &input, string &output)
 	if(len <= 0)
 	{
 		LOG_WARN << "peek found no output";
-		output.clear();
 		return false;
 	}
 
+	string output;
 	output.resize((size_t)len, '\0');
 	int ret = ikcp_recv(kcp_, (char*)output.c_str(), len);
 	assert(ret >= 0);
-	output.resize((size_t)ret);
+
+	TcpConnectionPtr connPtr = conn_.lock();
+	assert(connPtr);
+	connPtr->send(output.c_str(), len);
+
+	LOG_INFO << "B -> A, bytes: " << len;
 	return true;
 }
 
-void KcpSession::sendToConn(const std::string& data)
-{
-	TcpConnectionPtr connPtr = conn_.lock();
-	assert(connPtr);
-	connPtr->send(data);
-}

@@ -11,16 +11,19 @@
 #include <map>
 #include <memory>
 #include <list>
+#include <functional>
 
 using namespace muduo;
 using namespace muduo::net;
 
-class KcpServerSession
+class KcpServerSession : public std::enable_shared_from_this<KcpServerSession>
 {
 public:
 	KcpServerSession(EventLoop* loop, IUINT32 id);
 	~KcpServerSession();
 
+	void connectSvr();
+	void disconnectFromSvr();
 
 	void recvFromTunnel();
 	sockaddr_in* getTunnelPeer();
@@ -39,6 +42,7 @@ private:
 	TcpConnectionPtr conn_;
 	std::list<std::string> payloadList_;
 	Timestamp lastActiveTime_;
+	bool disconnected_;
 };
 
 typedef std::shared_ptr<KcpServerSession> KcpServerSessionPtr;

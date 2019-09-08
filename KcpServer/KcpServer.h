@@ -21,10 +21,11 @@ public:
 	void run();
 
 private:
-	int initUdpTunnel();
+	int  initUdpTunnel();
 	void onUdpTunnelReadable(Timestamp);
 	void onUpdateKcpTimer();
 	void onCheckDeadSessionTimer();
+	void onDeadSessionNotity();
 
 private:
 	EventLoop loop_;

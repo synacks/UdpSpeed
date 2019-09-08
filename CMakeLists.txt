@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.5)
 project(proxy)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -DMUDUO_STD_STRING")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11 -DMUDUO_STD_STRING")
 
 include_directories("/home/leo/Code/KCP/proxy")
+set(CMAKE_EXE_LINKER_FLAGS "-static")
 
 file(GLOB MUDUO_SRCS
         muduo/base/*.cc
@@ -24,9 +25,10 @@ set(SOURCE_FILES
         kcp/ikcp.c
         kcp/ikcp.h
         ${MUDUO_SRCS}
-        ${KCPPROXY_SRCS} KcpProxy/Option.h)
+        ${KCPPROXY_SRCS} KcpProxy/Option.h DownloadTest/DownloadClient.cpp DownloadTest/DownloadServer.cpp)
 
 add_executable(proxy ${SOURCE_FILES})
+
 target_link_libraries(proxy pthread)
 
 file(GLOB KCPSERVER_SRCS
@@ -58,3 +60,9 @@ add_executable(echoclient
         )
 
 target_link_libraries(echoclient pthread)
+
+add_executable(downcli ${MUDUO_SRCS} DownloadTest/DownloadClient.cpp)
+target_link_libraries(downcli pthread)
+
+add_executable(downsvr ${MUDUO_SRCS} DownloadTest/DownloadServer.cpp)
+target_link_libraries(downsvr pthread)

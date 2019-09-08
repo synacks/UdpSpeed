@@ -16,13 +16,11 @@ typedef std::weak_ptr<muduo::net::TcpConnection> TcpConnectionRef;
 class KcpSession
 {
 public:
-	KcpSession(TcpConnectionRef ref);
+	explicit KcpSession(TcpConnectionRef ref);
 	~KcpSession();
 
 	void sendToTunnel(const void *data, size_t len);
-	bool recvFromTunnel(const std::string &input, std::string &output);
-
-	void sendToConn(const std::string& data);
+	bool recvFromTunnel(const std::string &input);
 
 	void update();
 	IUINT32 id() {return id_;}

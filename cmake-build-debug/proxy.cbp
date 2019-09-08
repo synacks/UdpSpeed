@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="proxy"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/leo/Code/KCP/proxy/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/leo/Code/KCP/proxy/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="proxy">
+				<Option output="/home/leo/Code/KCP/proxy/cmake-build-debug/proxy" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/leo/Code/KCP/proxy/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/leo/Code/KCP/proxy"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 proxy"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="proxy/fast">
+				<Option output="/home/leo/Code/KCP/proxy/cmake-build-debug/proxy" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/leo/Code/KCP/proxy/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/leo/Code/KCP/proxy"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 proxy/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="server">
+				<Option output="/home/leo/Code/KCP/proxy/cmake-build-debug/server" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/leo/Code/KCP/proxy/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/leo/Code/KCP/proxy"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 server"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="server/fast">
+				<Option output="/home/leo/Code/KCP/proxy/cmake-build-debug/server" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/leo/Code/KCP/proxy/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/leo/Code/KCP/proxy"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 server/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/leo/Code/KCP/proxy/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="echoserver">
+				<Option output="/home/leo/Code/KCP/proxy/cmake-build-debug/echoserver" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/leo/Code/KCP/proxy/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/leo/Code/KCP/proxy"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 echoserver"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="echoserver/fast">
+				<Option output="/home/leo/Code/KCP/proxy/cmake-build-debug/echoserver" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/leo/Code/KCP/proxy/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/leo/Code/KCP/proxy"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 echoserver/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="echoclient">
+				<Option output="/home/leo/Code/KCP/proxy/cmake-build-debug/echoclient" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/leo/Code/KCP/proxy/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/leo/Code/KCP/proxy"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 echoclient"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="echoclient/fast">
+				<Option output="/home/leo/Code/KCP/proxy/cmake-build-debug/echoclient" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/leo/Code/KCP/proxy/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/leo/Code/KCP/proxy"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 echoclient/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/home/leo/Code/KCP/proxy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/leo/Code/KCP/proxy/DownloadTest/DownloadClient.cpp">
+			<Option target="proxy"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/DownloadTest/DownloadServer.cpp">
+			<Option target="proxy"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/EchoClient/main.cpp">
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/EchoServer/main.cpp">
+			<Option target="echoserver"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/KcpProxy/KcpProxy.cpp">
+			<Option target="proxy"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/KcpProxy/KcpProxy.h">
+			<Option target="proxy"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/KcpProxy/KcpSession.cpp">
+			<Option target="proxy"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/KcpProxy/KcpSession.h">
+			<Option target="proxy"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/KcpProxy/KcpTunnel.cpp">
+			<Option target="proxy"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/KcpProxy/KcpTunnel.h">
+			<Option target="proxy"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/KcpProxy/Option.h">
+			<Option target="proxy"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/KcpProxy/main.cpp">
+			<Option target="proxy"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/KcpServer/KcpServer.cpp">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/KcpServer/KcpServer.h">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/KcpServer/KcpServerSession.cpp">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/KcpServer/KcpServerSession.h">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/KcpServer/Option.h">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/KcpServer/main.cpp">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/kcp/ikcp.c">
+			<Option target="proxy"/>
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/kcp/ikcp.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/AsyncLogging.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/AsyncLogging.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/Atomic.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/BlockingQueue.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/BoundedBlockingQueue.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/Condition.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/Condition.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/CountDownLatch.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/CountDownLatch.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/CurrentThread.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/CurrentThread.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/Date.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/Date.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/Exception.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/Exception.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/FileUtil.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/FileUtil.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/GzipFile.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/LogFile.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/LogFile.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/LogStream.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/LogStream.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/Logging.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/Logging.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/Mutex.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/ProcessInfo.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/ProcessInfo.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/Singleton.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/StringPiece.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/Thread.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/Thread.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/ThreadLocal.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/ThreadLocalSingleton.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/ThreadPool.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/ThreadPool.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/TimeZone.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/TimeZone.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/Timestamp.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/Timestamp.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/Types.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/WeakCallback.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/copyable.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/base/noncopyable.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/Acceptor.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/Acceptor.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/Buffer.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/Buffer.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/Callbacks.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/Channel.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/Channel.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/Connector.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/Connector.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/Endian.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/EventLoop.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/EventLoop.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/EventLoopThread.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/EventLoopThread.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/EventLoopThreadPool.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/EventLoopThreadPool.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/InetAddress.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/InetAddress.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/Poller.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/Poller.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/Socket.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/Socket.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/SocketsOps.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/SocketsOps.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/TcpClient.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/TcpClient.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/TcpConnection.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/TcpConnection.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/TcpServer.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/TcpServer.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/Timer.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/Timer.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/TimerId.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/TimerQueue.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/TimerQueue.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/ZlibStream.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/boilerplate.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/boilerplate.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/poller/DefaultPoller.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/poller/EPollPoller.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/poller/EPollPoller.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/poller/PollPoller.cc">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/muduo/net/poller/PollPoller.h">
+			<Option target="proxy"/>
+			<Option target="server"/>
+			<Option target="echoserver"/>
+			<Option target="echoclient"/>
+		</Unit>
+		<Unit filename="/home/leo/Code/KCP/proxy/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

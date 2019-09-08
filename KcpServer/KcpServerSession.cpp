@@ -31,27 +31,39 @@ int output(const char *buf, int len, ikcpcb *kcp, void *user)
 	while(bytes < 0 && errno == EAGAIN);
 
 	assert(bytes == len);
-	LOG_INFO << "B -> C, bytes: " << bytes;
+	LOG_INFO << "C -> B, bytes: " << bytes;
 	return (int)bytes;
 }
 
 KcpServerSession::KcpServerSession(EventLoop* loop, IUINT32 id)
 	: client_(make_shared<TcpClient>(loop, InetAddress(g_option.destIp, g_option.destPort), "tcpclient"))
+	, disconnected_(false)
 {
 	kcp_ = ikcp_create(id, this);
 	ikcp_nodelay(kcp_, 1, 10, 1, 1);
 	ikcp_setoutput(kcp_, output);
-	client_->setConnectionCallback(std::bind(&KcpServerSession::onConnection, this, _1));
-	client_->setMessageCallback(std::bind(&KcpServerSession::onMessage, this, _1, _2, _3));
-	client_->connect();
 	lastActiveTime_ = Timestamp::now();
 }
 
 KcpServerSession::~KcpServerSession()
 {
-	client_->disconnect();
 	ikcp_flush(kcp_);
 	ikcp_release(kcp_);
+}
+
+void KcpServerSession::connectSvr()
+{
+	client_->setConnectionCallback(std::bind(&KcpServerSession::onConnection, shared_from_this(), _1));
+	client_->setMessageCallback(std::bind(&KcpServerSession::onMessage, shared_from_this(), _1, _2, _3));
+	client_->connect();
+}
+
+void KcpServerSession::disconnectFromSvr()
+{
+	client_->setConnectionCallback(defaultConnectionCallback);
+	client_->setMessageCallback(defaultMessageCallback);
+	client_->disconnect();
+	disconnected_ = true;
 }
 
 void KcpServerSession::recvFromTunnel()
@@ -72,7 +84,7 @@ void KcpServerSession::recvFromTunnel()
 	extractTunnelPayload(std::string(buf, (size_t)ret), payload);
 	if(payload.empty())
 	{
-		LOG_ERROR << "extract payload from tunnel packet failed";
+		LOG_DEBUG << "extract payload from tunnel packet failed";
 		return;
 	}
 
@@ -129,13 +141,16 @@ void KcpServerSession::onConnection(const TcpConnectionPtr& conn)
 		while(!payloadList_.empty())
 		{
 			conn_->send(payloadList_.front());
+			LOG_INFO << "found data cached while connecting dest server"
+							 << ", data: " << &payloadList_.front()
+							 << ", length: " << payloadList_.front().length();
 			payloadList_.pop_front();
 		}
 	}
 	else
 	{
-		client_->stop();
-		conn_ = nullptr;
+		conn_.reset();
+		disconnected_ = true;
 	}
 }
 
@@ -144,6 +159,7 @@ void KcpServerSession::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Time
 {
 	int sendRet = ikcp_send(kcp_, buf->peek(), (int)buf->readableBytes());
 	assert(sendRet == 0);
+	LOG_INFO << "D -> C, bytes: " << buf->readableBytes();
 	buf->retrieveAll();
 }
 
@@ -166,6 +182,10 @@ void KcpServerSession::updateKcp()
 
 bool KcpServerSession::isDead()
 {
+	if(disconnected_)
+	{
+		return true;
+	}
 	double delta = timeDifference(Timestamp::now(), lastActiveTime_);
 	return delta > 2.0 * 15;
 }

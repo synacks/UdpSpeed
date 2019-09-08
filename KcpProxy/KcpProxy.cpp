@@ -49,7 +49,6 @@ void KcpProxy::onConnection(const TcpConnectionPtr& conn)
 		KcpSessionRef sessRef = boost::any_cast<KcpSessionRef>(conn->getContext());
 		KcpSessionPtr sess = sessRef.lock();
 		assert(sess);
-		//TODO: send connection close message to server
 		sessionMap_.erase(sess->id());
 	}
 
@@ -61,7 +60,6 @@ void KcpProxy::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp)
 	KcpSessionPtr sess = sessRef.lock();
 	assert(sess);
 	sess->sendToTunnel(buf->peek(), buf->readableBytes());
-	LOG_INFO << "A -> B, bytes: " << buf->readableBytes();
 	buf->retrieveAll();
 }
 
@@ -77,25 +75,39 @@ void KcpProxy::onKcpTunnelMessage(Timestamp)
 	}
 
 	IUINT32 sessId = ikcp_getconv(buf);
+	if(sessId == 0)
+	{
+		if(ret == 8)
+		{
+			IUINT32 deadSessId = ntohl(*(uint32_t*)(buf + 4));
+			LOG_WARN << "found dead session id: " << deadSessId;
+			KcpSessionMap::iterator it = sessionMap_.find(sessId);
+			if(it != sessionMap_.end())
+			{
+				sessionMap_.erase(it);
+				LOG_WARN << "and remove the dead session!";
+			}
+		}
+		return;
+	}
+
 	KcpSessionMap::iterator it = sessionMap_.find(sessId);
 	if(sessionMap_.end() == it)
 	{
-		LOG_WARN << "invalid session id: " << sessId;
+		LOG_WARN << "get invalid session id: " << sessId;
+		uint32_t packet[2] = {0, htonl(sessId)};
+		KcpTunnel::output((char*)packet, sizeof(packet), NULL, NULL);
 		return;
 	}
 
 	LOG_INFO << "C -> B, bytes: " << ret;
 
 	KcpSessionPtr sess = it->second;
-	std::string payload;
-	if(!sess->recvFromTunnel(std::string(buf, (size_t) ret), payload))
+	if(!sess->recvFromTunnel(std::string(buf, (size_t)ret)))
 	{
 		LOG_WARN << "recv from tunnel failed";
 		return;
 	}
-
-	sess->sendToConn(payload);
-	LOG_INFO << "B -> A, bytes: " << payload.length();
 }
 
 void KcpProxy::onUpdateTunnelTimer()
