@@ -1,6 +1,0 @@
-/home/leo/Code/KCP/proxy/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/leo/Code/KCP/proxy/cmake-build-debug/CMakeFiles/proxy.dir
-/home/leo/Code/KCP/proxy/cmake-build-debug/CMakeFiles/server.dir
-/home/leo/Code/KCP/proxy/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/leo/Code/KCP/proxy/cmake-build-debug/CMakeFiles/echoserver.dir
-/home/leo/Code/KCP/proxy/cmake-build-debug/CMakeFiles/echoclient.dir
