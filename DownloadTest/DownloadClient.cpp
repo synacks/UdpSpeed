@@ -27,9 +27,10 @@ class DownloadClient : public enable_shared_from_this<DownloadClient>
 public:
 		DownloadClient(EventLoop* loop)
 						: client_(loop, InetAddress(g_server.c_str(), g_port), "DownloadClient")
-						, curTotalBytes_(0)
-						, prevTotalBytes_(0)
+						, totalKB_(0)
+						, prevKB_(0)
 						, datalen_(0)
+						, count_(0)
 						, loop_(loop)
 		{
 		}
@@ -44,7 +45,7 @@ public:
 			client_.setConnectionCallback(std::bind(&DownloadClient::onConnection, shared_from_this(), _1));
 			client_.setMessageCallback(std::bind(&DownloadClient::onMessage, shared_from_this(), _1, _2, _3));
 			client_.connect();
-			loop_->runEvery(1.0, std::bind(&DownloadClient::onTimer, shared_from_this()));
+			loop_->runEvery(3.0, std::bind(&DownloadClient::onTimer, shared_from_this()));
 		}
 
 		void disconnect()
@@ -59,6 +60,7 @@ public:
 			if(conn->connected())
 			{
 				LOG_INFO << "connected to " << g_server << ":" << g_port;
+				conn->send("abc", 3);
 			}
 			else
 			{
@@ -68,21 +70,26 @@ public:
 
 		void onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp)
 		{
-			curTotalBytes_ += buf->readableBytes();
+			totalKB_ += buf->readableBytes() * 1.0 / 1024;
+			buf->retrieveAll();
 		}
 
 		void onTimer()
 		{
-			double delta = curTotalBytes_ - prevTotalBytes_;
-			LOG_INFO << "download speed: " << delta * 1.0 / 1024  << " KB/s";
+			count_++;
+			LOG_INFO << "download speed: " << (totalKB_ - prevKB_) / 3  << " KB/s"
+							 << ", avg speed: " << totalKB_ / 3 / count_ << " KB/s";
+			prevKB_ = totalKB_;
+
 		}
 
 
 private:
 		TcpClient client_;
-		uint64_t curTotalBytes_;
-		uint64_t prevTotalBytes_;
+		double totalKB_;
+		double prevKB_;
 		size_t datalen_;
+		size_t count_;
 		EventLoop* loop_;
 };
 
