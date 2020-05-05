@@ -8,9 +8,11 @@
 #include <muduo/net/EventLoop.h>
 #include "muduo/net/TcpServer.h"
 #include "muduo/net/Channel.h"
-#include "KcpProxySession.h"
+#include "KcpDataSession.h"
+#include "KcpControlSession.h"
 #include <map>
 #include <memory>
+#include <queue>
 
 using namespace muduo;
 using namespace muduo::net;
@@ -27,16 +29,16 @@ private:
 	void onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp);
 	void onKcpTunnelMessage(Timestamp);
 	void onUpdateTunnelTimer();
+	void handleControlResponse(const std::string& resp);
+	void notifyDeadSessionId(uint32_t id);
 
 private:
 	EventLoop loop_;
 	TcpServer server_;
 	Channel kcpChan_;
-
-	typedef std::shared_ptr<KcpProxySession> KcpSessionPtr;
-	typedef std::map<IUINT32, KcpSessionPtr> KcpSessionMap;
-
-	KcpSessionMap sessionMap_;
+	KcpControlSession controlSess_;
+	std::map<IUINT32, KcpDataSessionRef> sessionMap_;
+	std::list<KcpDataSessionRef> uninitedSessList_;
 };
 
 

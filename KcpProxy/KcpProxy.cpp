@@ -27,8 +27,8 @@ void KcpProxy::run()
 	server_.setConnectionCallback(std::bind(&KcpProxy::onConnection, this, placeholders::_1));
 	server_.setMessageCallback(std::bind(&KcpProxy::onMessage, this, _1, _2, _3));
 	server_.start();
-	loop_.runEvery(0.01, std::bind(&KcpProxy::onUpdateTunnelTimer, this));
-	loop_.loop();
+loop_.runEvery(0.01, std::bind(&KcpProxy::onUpdateTunnelTimer, this));
+loop_.loop();
 }
 
 void KcpProxy::onConnection(const TcpConnectionPtr& conn)
@@ -37,42 +37,38 @@ void KcpProxy::onConnection(const TcpConnectionPtr& conn)
 			 << conn->peerAddress().toIpPort()
 			 << " -> "
 			 << conn->localAddress().toIpPort();
+
 	if(conn->connected())
 	{
-		KcpSessionPtr sess = make_shared<KcpProxySession>(conn);
-		sessionMap_[sess->id()] = sess;
-		KcpSessionRef sessRef(sess);
-		conn->setContext(sessRef);
+		KcpDataSessionPtr sess = make_shared<KcpDataSession>(conn);
+		conn->setContext(sess);
+        uninitedSessList_.push_back(sess);
+
+		char createSessionCmd = CMD_CREATE_SESSION;
+		controlSess_.sendCmd(&createSessionCmd, 1);
 	}
 	else
 	{
-		KcpSessionRef sessRef = boost::any_cast<KcpSessionRef>(conn->getContext());
-		KcpSessionPtr sess = sessRef.lock();
-		if(sess)
-		{
-            sessionMap_.erase(sess->id());
-        }
-		else
+		KcpDataSessionPtr sess = boost::any_cast<KcpDataSessionPtr>(conn->getContext());
+
+		//清理该sess在其他对象中的引用
+		sessionMap_.erase(sess->id());
+        for(auto it = uninitedSessList_.begin(); it != uninitedSessList_.end(); ++it)
         {
-		    LOG_INFO << "session disappeared before connection!";
-		}
+            if(it->lock() == sess)
+            {
+                uninitedSessList_.erase(it);
+                break;
+            }
+        }
 	}
 }
 
 void KcpProxy::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp)
 {
-	KcpSessionRef sessRef = boost::any_cast<KcpSessionRef>(conn->getContext());
-	KcpSessionPtr sess = sessRef.lock();
-	if(sess)
-    {
-        sess->sendToTunnel(buf->peek(), buf->readableBytes());
-        buf->retrieveAll();
-    }
-	else
-    {
-	    LOG_INFO << "session does not exist any more, close it!";
-	    conn->forceClose();
-    }
+	KcpDataSessionPtr sess = boost::any_cast<KcpDataSessionPtr>(conn->getContext());
+    sess->sendToTunnel(buf->peek(), buf->readableBytes());
+    buf->retrieveAll();
 }
 
 void KcpProxy::onKcpTunnelMessage(Timestamp)
@@ -90,33 +86,23 @@ void KcpProxy::onKcpTunnelMessage(Timestamp)
 	//sessId为0表示为管理会话
 	if(sessId == 0)
 	{
-		if(ret == 8)
-		{
-			IUINT32 deadSessId = ntohl(*(uint32_t*)(buf + 4));
-			LOG_WARN << "found dead session id: " << deadSessId;
-			KcpSessionMap::iterator it = sessionMap_.find(deadSessId);
-			if(it != sessionMap_.end())
-			{
-			    //TODO:关闭session对应的TCP连接
-				sessionMap_.erase(it);
-				LOG_WARN << "remove the dead session，id: " << deadSessId;
-			}
-		}
-		return;
+	    //处理创建会话的回复
+	    std::string resp;
+	    controlSess_.parseResp(buf, ret, resp);
+	    handleControlResponse(resp);
 	}
 
-	KcpSessionMap::iterator it = sessionMap_.find(sessId);
+	auto it = sessionMap_.find(sessId);
 	if(sessionMap_.end() == it)
 	{
-		LOG_WARN << "get invalid session id: " << sessId;
-		uint32_t packet[2] = {0, htonl(sessId)};
-		KcpTunnel::output((char*)packet, sizeof(packet), NULL, this);
+        notifyDeadSessionId(sessId);
 		return;
 	}
 
 	LOG_INFO << "["<< sessId << "] C -> B, bytes: " << ret;
 
-	KcpSessionPtr sess = it->second;
+	KcpDataSessionPtr sess = it->second.lock();
+	assert(sess);
 	if(sess->recvFromTunnel(std::string(buf, (size_t)ret)) < 0)
 	{
 		LOG_WARN << "recv from tunnel failed";
@@ -128,6 +114,54 @@ void KcpProxy::onUpdateTunnelTimer()
 {
 	for(auto it = sessionMap_.begin(); it != sessionMap_.end(); ++it)
 	{
-		it->second->update();
+		auto sess = it->second.lock();
+		assert(sess);
+		sess->update();
 	}
+}
+
+void KcpProxy::handleControlResponse(const std::string& resp)
+{
+    if(resp.empty())
+    {
+        return;
+    }
+
+    uint8_t respCmd = resp[0];
+    if(respCmd == CMD_CREATE_SESSION)
+    {
+        uint32_t newSessId = 0;
+        memcpy(&newSessId, resp.c_str() + 1, 4);
+        newSessId = ntohl(newSessId);
+        LOG_INFO << "get new session id: " << newSessId;
+        if(!uninitedSessList_.empty())
+		{
+        	//将该会话ID给予未初始化Session列表中的第一个
+        	//uninitedSessList_中的会话对象与连接的生命周期一致
+			KcpDataSessionPtr sess = uninitedSessList_.front().lock();
+			assert(sess);
+			sess->init(newSessId);
+			uninitedSessList_.pop_front();
+			sessionMap_[newSessId] = sess;
+        }
+		else
+		{
+			LOG_INFO << "connection lost, the new created session id will not be used!";
+			notifyDeadSessionId(newSessId);
+		}
+    }
+	else
+	{
+		LOG_ERROR << "unknown response cmd: " << respCmd;
+	}
+}
+
+void KcpProxy::notifyDeadSessionId(uint32_t id)
+{
+	char cmd[5] = {0};
+	cmd[0] = CMD_DESTROY_SESSION;
+	id = htonl(id);
+	memcpy(&cmd[1], &id, 4);
+
+	controlSess_.sendCmd(cmd, sizeof(cmd));
 }

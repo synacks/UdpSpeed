@@ -25,7 +25,7 @@ set(SOURCE_FILES
         kcp/ikcp.c
         kcp/ikcp.h
         ${MUDUO_SRCS}
-        ${KCPPROXY_SRCS} KcpProxy/Option.h)
+        ${KCPPROXY_SRCS} KcpProxy/Option.h KcpProxy/KcpControlSession.cpp KcpProxy/KcpControlSession.h)
 
 add_executable(proxy ${SOURCE_FILES})
 

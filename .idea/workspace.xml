@@ -16,7 +16,20 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="82cf2c1d-240e-47c7-8d20-50d09a6ff9eb" name="Default Changelist" comment="" />
+    <list default="true" id="82cf2c1d-240e-47c7-8d20-50d09a6ff9eb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/KcpProxy/KcpControlSession.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/KcpProxy/KcpControlSession.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KcpProxy/KcpProxy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/KcpProxy/KcpProxy.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KcpProxy/KcpProxy.h" beforeDir="false" afterPath="$PROJECT_DIR$/KcpProxy/KcpProxy.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KcpProxy/KcpProxySession.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/KcpProxy/KcpDataSession.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KcpProxy/KcpProxySession.h" beforeDir="false" afterPath="$PROJECT_DIR$/KcpProxy/KcpDataSession.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KcpProxy/KcpSession.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/KcpProxy/KcpSession.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/KcpProxy/KcpTunnel.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/KcpProxy/KcpTunnel.cpp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -42,7 +55,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RunManager" selected="CMake Application.proxy">
     <configuration name="downcli" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="proxy" TARGET_NAME="downcli" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="proxy" RUN_TARGET_NAME="downcli">
@@ -105,6 +118,7 @@
       <workItem from="1588382486744" duration="15464000" />
       <workItem from="1588472050456" duration="9626000" />
       <workItem from="1588511912029" duration="27883000" />
+      <workItem from="1588670091465" duration="9300000" />
     </task>
     <servers />
   </component>
@@ -128,16 +142,16 @@
       <screen x="76" y="0" width="1844" height="1080" />
     </state>
     <state x="496" y="455" key="FileChooserDialogImpl/76.0.1844.1080@76.0.1844.1080" timestamp="1588668822158" />
-    <state x="217" y="342" key="SettingsEditor" timestamp="1588668832439">
+    <state x="334" y="248" width="1210" height="716" key="SettingsEditor" timestamp="1588684862303">
       <screen x="76" y="0" width="1844" height="1080" />
     </state>
     <state x="295" y="310" key="SettingsEditor/109.0.1811.1080@109.0.1811.1080" timestamp="1588434311424" />
     <state x="256" y="310" key="SettingsEditor/65.0.1855.1080@65.0.1855.1080" timestamp="1588423127980" />
-    <state x="217" y="342" key="SettingsEditor/76.0.1844.1080@76.0.1844.1080" timestamp="1588668832439" />
-    <state x="514" y="138" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1588600690876">
+    <state x="334" y="248" width="1210" height="716" key="SettingsEditor/76.0.1844.1080@76.0.1844.1080" timestamp="1588684862303" />
+    <state x="514" y="138" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1588684057263">
       <screen x="76" y="0" width="1844" height="1080" />
     </state>
-    <state x="514" y="138" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/76.0.1844.1080@76.0.1844.1080" timestamp="1588600690876" />
+    <state x="514" y="138" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/76.0.1844.1080@76.0.1844.1080" timestamp="1588684057263" />
     <state x="674" y="139" width="647" height="801" key="find.popup" timestamp="1588583309352">
       <screen x="76" y="0" width="1844" height="1080" />
     </state>

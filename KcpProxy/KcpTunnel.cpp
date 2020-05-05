@@ -9,7 +9,7 @@
 #include <muduo/base/Logging.h>
 #include <KcpProxy/Option.h>
 #include "Option.h"
-#include "KcpProxySession.h"
+#include "KcpDataSession.h"
 
 
 int KcpTunnel::g_udpSock = -1;
@@ -44,8 +44,11 @@ int KcpTunnel::output(const char *buf, int len, ikcpcb *kcp, void *user)
 	}
 	while(bytes < 0 && errno == EAGAIN);
 
-	KcpProxySession* sess = (KcpProxySession*)user;
-	LOG_INFO << "["<< sess->id() << "] B -> C, bytes: " << bytes;
+	KcpDataSession* sess = (KcpDataSession*)user;
+	if(sess)
+    {
+        LOG_INFO << "["<< sess->id() << "] B -> C, bytes: " << bytes;
+    }
 
 	return (int)bytes;
 }
