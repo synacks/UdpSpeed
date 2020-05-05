@@ -25,72 +25,72 @@ EventLoop* g_loop = nullptr;
 class DownloadClient : public enable_shared_from_this<DownloadClient>
 {
 public:
-		DownloadClient(EventLoop* loop)
-						: client_(loop, InetAddress(g_server.c_str(), g_port), "DownloadClient")
-						, totalKB_(0)
-						, prevKB_(0)
-						, datalen_(0)
-						, count_(0)
-						, loop_(loop)
-		{
-		}
+    DownloadClient(EventLoop* loop)
+        : client_(loop, InetAddress(g_server.c_str(), g_port), "DownloadClient")
+        , totalKB_(0)
+        , prevKB_(0)
+        , datalen_(0)
+        , count_(0)
+        , loop_(loop)
+    {
+    }
 
-		~DownloadClient()
-		{
-			LOG_INFO << "~DownloadClient";
-		}
+    ~DownloadClient()
+    {
+        LOG_INFO << "~DownloadClient";
+    }
 
-		void connect()
-		{
-			client_.setConnectionCallback(std::bind(&DownloadClient::onConnection, shared_from_this(), _1));
-			client_.setMessageCallback(std::bind(&DownloadClient::onMessage, shared_from_this(), _1, _2, _3));
-			client_.connect();
-			loop_->runEvery(3.0, std::bind(&DownloadClient::onTimer, shared_from_this()));
-		}
+    void connect()
+    {
+        client_.setConnectionCallback(std::bind(&DownloadClient::onConnection, shared_from_this(), _1));
+        client_.setMessageCallback(std::bind(&DownloadClient::onMessage, shared_from_this(), _1, _2, _3));
+        client_.connect();
+    }
 
-		void disconnect()
-		{
-			client_.setConnectionCallback(defaultConnectionCallback);
-			client_.setMessageCallback(defaultMessageCallback);
-			client_.disconnect();
-		}
+    void disconnect()
+    {
+        client_.setConnectionCallback(defaultConnectionCallback);
+        client_.setMessageCallback(defaultMessageCallback);
+        client_.disconnect();
+    }
 
-		void onConnection(const TcpConnectionPtr& conn)
-		{
-			if(conn->connected())
-			{
-				LOG_INFO << "connected to " << g_server << ":" << g_port;
-				conn->send("abc", 3);
-			}
-			else
-			{
-				LOG_INFO << "disconnected from " << g_server << ":" << g_port;
-			}
-		}
+    void onConnection(const TcpConnectionPtr& conn)
+    {
+        if(conn->connected())
+        {
+            LOG_INFO << "connected to " << g_server << ":" << g_port;
+            conn->send("abc", 3);
+            loop_->runEvery(3.0, std::bind(&DownloadClient::onTimer, shared_from_this()));
+        }
+        else
+        {
+            LOG_INFO << "disconnected from " << g_server << ":" << g_port;
+        }
+    }
 
-		void onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp)
-		{
-			totalKB_ += buf->readableBytes() * 1.0 / 1024;
-			buf->retrieveAll();
-		}
+    void onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp)
+    {
+        totalKB_ += buf->readableBytes() * 1.0 / 1024;
+        buf->retrieveAll();
+    }
 
-		void onTimer()
-		{
-			count_++;
-			LOG_INFO << "download speed: " << (totalKB_ - prevKB_) / 3  << " KB/s"
-							 << ", avg speed: " << totalKB_ / 3 / count_ << " KB/s";
-			prevKB_ = totalKB_;
+    void onTimer()
+    {
+        count_++;
+        LOG_INFO << "download speed: " << (totalKB_ - prevKB_) / 3  << " KB/s"
+                         << ", avg speed: " << totalKB_ / 3 / count_ << " KB/s";
+        prevKB_ = totalKB_;
 
-		}
+    }
 
 
 private:
-		TcpClient client_;
-		double totalKB_;
-		double prevKB_;
-		size_t datalen_;
-		size_t count_;
-		EventLoop* loop_;
+    TcpClient client_;
+    double totalKB_;
+    double prevKB_;
+    size_t datalen_;
+    size_t count_;
+    EventLoop* loop_;
 };
 
 

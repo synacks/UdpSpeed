@@ -12,37 +12,43 @@
 #include <memory>
 #include <list>
 #include <functional>
+#include "muduo/net/TimerId.h"
+#include "muduo/net/EventLoop.h"
 
 using namespace muduo;
 using namespace muduo::net;
 
-class KcpServerSession : public std::enable_shared_from_this<KcpServerSession>
+class KcpServerSession
 {
 public:
-	KcpServerSession(EventLoop* loop, IUINT32 id);
+	KcpServerSession(EventLoop* loop, IUINT32 id, sockaddr_in* remote);
 	~KcpServerSession();
 
 	void connectSvr();
 	void disconnectFromSvr();
 
-	void recvFromTunnel();
+	void recvFromTunnel(const char* packet, size_t len);
 	sockaddr_in* getTunnelPeer();
 	void updateKcp();
 	bool isDead();
+    string getIdStr();
+
+    static int output(const char *buf, int len, ikcpcb *kcp, void *user);
 
 private:
 	void extractTunnelPayload(const std::string &input, std::string &output);
 	void onConnection(const TcpConnectionPtr& conn);
 	void onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp);
+	void onCheckConnection();
 
 private:
+    muduo::net::EventLoop* loop_;
 	ikcpcb* kcp_;
 	std::shared_ptr<TcpClient> client_;
+	bool connecting_;
 	sockaddr_in remoteAddr_;
-	TcpConnectionPtr conn_;
 	std::list<std::string> payloadList_;
-	Timestamp lastActiveTime_;
-	bool disconnected_;
+	Timestamp lastTunnelActiveTime_;
 };
 
 typedef std::shared_ptr<KcpServerSession> KcpServerSessionPtr;

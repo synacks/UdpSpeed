@@ -8,7 +8,7 @@
 #include <muduo/net/EventLoop.h>
 #include "muduo/net/TcpServer.h"
 #include "muduo/net/Channel.h"
-#include "KcpSession.h"
+#include "KcpProxySession.h"
 #include <map>
 #include <memory>
 
@@ -28,13 +28,12 @@ private:
 	void onKcpTunnelMessage(Timestamp);
 	void onUpdateTunnelTimer();
 
-
 private:
 	EventLoop loop_;
 	TcpServer server_;
 	Channel kcpChan_;
 
-	typedef std::shared_ptr<KcpSession> KcpSessionPtr;
+	typedef std::shared_ptr<KcpProxySession> KcpSessionPtr;
 	typedef std::map<IUINT32, KcpSessionPtr> KcpSessionMap;
 
 	KcpSessionMap sessionMap_;

@@ -1271,4 +1271,17 @@ IUINT32 ikcp_getconv(const void *ptr)
 	return conv;
 }
 
+IUINT32 ikcp_getsn(const void* ptr, size_t size)
+{
+    IUINT32 sn = -1;
+    if (size < (int)IKCP_OVERHEAD)
+    {
+        return sn;
+    }
+
+    const char* packet = (const char*)ptr;
+    ikcp_decode32u(packet + 12, &sn);
+    return sn;
+}
+
 

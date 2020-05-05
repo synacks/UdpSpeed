@@ -7,8 +7,9 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <muduo/base/Logging.h>
-#include <KcpServer/Option.h>
+#include <KcpProxy/Option.h>
 #include "Option.h"
+#include "KcpProxySession.h"
 
 
 int KcpTunnel::g_udpSock = -1;
@@ -20,18 +21,17 @@ void KcpTunnel::init()
 
 	sockaddr_in remote;
 	remote.sin_family = AF_INET;
-	remote.sin_addr.s_addr = inet_addr(g_option.destIp.c_str());
-	remote.sin_port = htons(g_option.destPort);
+	remote.sin_addr.s_addr = inet_addr(g_option.serverIp.c_str());
+	remote.sin_port = htons(g_option.serverPort);
 
-	LOG_INFO << g_option.destIp << g_option.destPort;
-	int ret = ::connect(g_udpSock, (const sockaddr*)&remote, sizeof(remote));
+	LOG_INFO << "started with remote ip: " << g_option.serverIp  << ", port: " << g_option.serverPort;
+	int ret = connect(g_udpSock, (const sockaddr*)&remote, sizeof(remote));
 	if(ret != 0)
 	{
 		LOG_ERROR << "connect failed, errno: " << errno;
 		assert(0);
 	}
 }
-
 
 int KcpTunnel::output(const char *buf, int len, ikcpcb *kcp, void *user)
 {
@@ -44,7 +44,8 @@ int KcpTunnel::output(const char *buf, int len, ikcpcb *kcp, void *user)
 	}
 	while(bytes < 0 && errno == EAGAIN);
 
-	LOG_INFO << "B -> C, bytes: " << bytes;
+	KcpProxySession* sess = (KcpProxySession*)user;
+	LOG_INFO << "["<< sess->id() << "] B -> C, bytes: " << bytes;
 
 	return (int)bytes;
 }

@@ -3,8 +3,8 @@ project(proxy)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11 -DMUDUO_STD_STRING")
 
-include_directories("/home/leo/Code/KCP/proxy")
-set(CMAKE_EXE_LINKER_FLAGS "-static")
+include_directories("./")
+#set(CMAKE_EXE_LINKER_FLAGS "-static")
 
 file(GLOB MUDUO_SRCS
         muduo/base/*.cc
@@ -25,7 +25,7 @@ set(SOURCE_FILES
         kcp/ikcp.c
         kcp/ikcp.h
         ${MUDUO_SRCS}
-        ${KCPPROXY_SRCS} KcpProxy/Option.h DownloadTest/DownloadClient.cpp DownloadTest/DownloadServer.cpp)
+        ${KCPPROXY_SRCS} KcpProxy/Option.h)
 
 add_executable(proxy ${SOURCE_FILES})
 

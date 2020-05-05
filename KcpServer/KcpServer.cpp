@@ -7,6 +7,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <muduo/base/Logging.h>
+#include <sstream>
 #include "KcpServer.h"
 
 using namespace std;
@@ -49,7 +50,7 @@ int KcpServer::initUdpTunnel()
 	return fd;
 }
 
-void KcpServer::onDeadSessionNotity()
+void KcpServer::onGetDeadSessionNotity()
 {
 	char buf[32] = {0};
 	sockaddr_in remote;
@@ -65,8 +66,8 @@ void KcpServer::onDeadSessionNotity()
 			if(0 == memcmp(&peer->sin_addr, &remote.sin_addr, sizeof(remote.sin_addr)) &&
 					peer->sin_port == remote.sin_port)
 			{
-        LOG_INFO << "erase dead session: " << deadSessId;
-        it->second->disconnectFromSvr();
+                LOG_INFO << "erase dead session: " << deadSessId;
+                it->second->disconnectFromSvr();
 				sessionMap_.erase(it);
 			}
 		}
@@ -75,34 +76,70 @@ void KcpServer::onDeadSessionNotity()
 
 void KcpServer::onUdpTunnelReadable(Timestamp)
 {
-	char buf[4] = {0};
+	char buf[4096] = {0};
 	sockaddr_in remote;
 	socklen_t remoteLen = sizeof(remote);
-	ssize_t bytes = recvfrom(udpServer_, buf, sizeof(buf), MSG_PEEK, (sockaddr*)&remote, &remoteLen);
+	ssize_t bytes = recvfrom(udpServer_, buf, sizeof(buf), 0, (sockaddr*)&remote, &remoteLen);
 	if(bytes < 0)
 	{
 		LOG_ERROR << "recv from udpserver failed, errno: " << errno;
 		return;
 	}
 
-	IUINT32 id = ikcp_getconv(buf);
-	if(id == 0)
-	{
-		onDeadSessionNotity();
-		return;
-	}
+	LOG_INFO << "remote address: " << inet_ntoa(remote.sin_addr) << ":" << ntohs(remote.sin_port);
 
-	LOG_INFO << "recv packet from " << id;
+	dispatchKcpPacket(buf, bytes, &remote);
+}
 
-	auto it = sessionMap_.find(id);
-	if(it == sessionMap_.end())
-	{
-		KcpServerSessionPtr sess = make_shared<KcpServerSession>(&loop_, id);
-		sess->connectSvr();
-		sessionMap_[id] = sess;
-	}
+void KcpServer::dispatchKcpPacket(const char* packet, size_t bytes, sockaddr_in* remote)
+{
+    IUINT32 sn = ikcp_getsn(packet, bytes);
+    if(sn == -1)
+    {
+        LOG_ERROR << "invalid kcp packet: cannot get sn from kcp packet!";
+        return;
+    }
 
-	sessionMap_[id]->recvFromTunnel();
+    IUINT32 id = ikcp_getconv(packet);
+    if(id == 0)
+    {
+        onGetDeadSessionNotity();
+        return;
+    }
+
+    //检查id对应的会话是否已经死了
+    if(deadSessionSet_.find(id) != deadSessionSet_.end())
+    {
+        LOG_WARN << "id was dead, id: " << id;
+        notifyPeerException(id, remote);
+        return;
+    }
+
+    //获取已经存在的session
+    auto it = sessionMap_.find(id);
+    if(it != sessionMap_.end())
+    {
+        if(sn == 0)
+        {
+            LOG_WARN << "sn should not be 0 while found live session, maybe duplicate packet!";
+        }
+        it->second->recvFromTunnel(packet, bytes);
+        return;
+    }
+
+    //创建一个新的session，前提是sn需要为0，如果不为0，则可能是C重启了
+    if(sn != 0)
+    {
+        LOG_ERROR << "sn should not be 0 while create session!";
+        notifyPeerException(id, remote);
+        return;
+    }
+
+    LOG_INFO << "create new kcp session, session id: " << id;
+    KcpServerSessionPtr sess = make_shared<KcpServerSession>(&loop_, id, remote);
+    sess->connectSvr();
+    sess->recvFromTunnel(packet, bytes);
+    sessionMap_[id] = sess;
 }
 
 void KcpServer::onUpdateKcpTimer()
@@ -121,8 +158,24 @@ void KcpServer::onCheckDeadSessionTimer()
 		auto cur = it++;
 		if(cur->second->isDead())
 		{
+		    LOG_INFO << cur->second->getIdStr() << " found dead session, erase it!";
 			cur->second->disconnectFromSvr();
 			sessionMap_.erase(cur);
+			deadSessionSet_.insert(cur->first);
+			std::ostringstream oss;
+			for(auto deadId : deadSessionSet_)
+            {
+			    oss << deadId;
+			    oss << " ";
+            }
+			LOG_INFO << "all dead sessions: " << oss.str();
 		}
 	}
+}
+
+void KcpServer::notifyPeerException(uint32_t sessId, sockaddr_in* remote)
+{
+    LOG_WARN << "notify invalid session id: " << sessId;
+    uint32_t packet[2] = {0, htonl(sessId)};
+    sendto(g_udpServer, packet, sizeof(packet), 0, (sockaddr*)(remote), sizeof(sockaddr_in));
 }

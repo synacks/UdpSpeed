@@ -10,7 +10,7 @@
 using namespace muduo;
 using namespace muduo::net;
 
-std::string g_data(40*1024, 'a');
+std::string g_data(1024*1024, 'a');
 
 void onConnection(const TcpConnectionPtr& conn)
 {
@@ -23,8 +23,9 @@ void onConnection(const TcpConnectionPtr& conn)
 
 void onWriteComplete(const TcpConnectionPtr& conn)
 {
+
 	conn->send(g_data.c_str(), (int)g_data.length());
-	LOG_INFO << "send " << g_data.length() << " bytes data";
+	//LOG_INFO << "send " << g_data.length() << " bytes data";
 }
 
 void onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp)
@@ -38,9 +39,12 @@ void onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp)
 
 std::shared_ptr<EventLoop> g_loop;
 
+
 void interruptHandler(int)
 {
 	g_loop->quit();
+
+
 }
 
 int main()

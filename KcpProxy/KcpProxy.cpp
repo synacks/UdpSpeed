@@ -14,7 +14,7 @@ using namespace std;
 
 
 KcpProxy::KcpProxy()
-		: server_(&loop_, InetAddress(6666), "KcpProxy", TcpServer::kReusePort)
+		: server_(&loop_, InetAddress(6665), "KcpProxy", TcpServer::kReusePort)
 		, kcpChan_(&loop_, KcpTunnel::g_udpSock)
 {}
 
@@ -39,7 +39,7 @@ void KcpProxy::onConnection(const TcpConnectionPtr& conn)
 			 << conn->localAddress().toIpPort();
 	if(conn->connected())
 	{
-		KcpSessionPtr sess = make_shared<KcpSession>(conn);
+		KcpSessionPtr sess = make_shared<KcpProxySession>(conn);
 		sessionMap_[sess->id()] = sess;
 		KcpSessionRef sessRef(sess);
 		conn->setContext(sessRef);
@@ -48,21 +48,32 @@ void KcpProxy::onConnection(const TcpConnectionPtr& conn)
 	{
 		KcpSessionRef sessRef = boost::any_cast<KcpSessionRef>(conn->getContext());
 		KcpSessionPtr sess = sessRef.lock();
-		assert(sess);
-		sessionMap_.erase(sess->id());
+		if(sess)
+		{
+            sessionMap_.erase(sess->id());
+        }
+		else
+        {
+		    LOG_INFO << "session disappeared before connection!";
+		}
 	}
-
 }
 
 void KcpProxy::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp)
 {
 	KcpSessionRef sessRef = boost::any_cast<KcpSessionRef>(conn->getContext());
 	KcpSessionPtr sess = sessRef.lock();
-	assert(sess);
-	sess->sendToTunnel(buf->peek(), buf->readableBytes());
-	buf->retrieveAll();
+	if(sess)
+    {
+        sess->sendToTunnel(buf->peek(), buf->readableBytes());
+        buf->retrieveAll();
+    }
+	else
+    {
+	    LOG_INFO << "session does not exist any more, close it!";
+	    conn->forceClose();
+    }
 }
-
 
 void KcpProxy::onKcpTunnelMessage(Timestamp)
 {
@@ -75,17 +86,20 @@ void KcpProxy::onKcpTunnelMessage(Timestamp)
 	}
 
 	IUINT32 sessId = ikcp_getconv(buf);
+
+	//sessId为0表示为管理会话
 	if(sessId == 0)
 	{
 		if(ret == 8)
 		{
 			IUINT32 deadSessId = ntohl(*(uint32_t*)(buf + 4));
 			LOG_WARN << "found dead session id: " << deadSessId;
-			KcpSessionMap::iterator it = sessionMap_.find(sessId);
+			KcpSessionMap::iterator it = sessionMap_.find(deadSessId);
 			if(it != sessionMap_.end())
 			{
+			    //TODO:关闭session对应的TCP连接
 				sessionMap_.erase(it);
-				LOG_WARN << "and remove the dead session!";
+				LOG_WARN << "remove the dead session，id: " << deadSessId;
 			}
 		}
 		return;
@@ -96,14 +110,14 @@ void KcpProxy::onKcpTunnelMessage(Timestamp)
 	{
 		LOG_WARN << "get invalid session id: " << sessId;
 		uint32_t packet[2] = {0, htonl(sessId)};
-		KcpTunnel::output((char*)packet, sizeof(packet), NULL, NULL);
+		KcpTunnel::output((char*)packet, sizeof(packet), NULL, this);
 		return;
 	}
 
-	LOG_INFO << "C -> B, bytes: " << ret;
+	LOG_INFO << "["<< sessId << "] C -> B, bytes: " << ret;
 
 	KcpSessionPtr sess = it->second;
-	if(!sess->recvFromTunnel(std::string(buf, (size_t)ret)))
+	if(sess->recvFromTunnel(std::string(buf, (size_t)ret)) < 0)
 	{
 		LOG_WARN << "recv from tunnel failed";
 		return;

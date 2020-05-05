@@ -8,9 +8,12 @@
 #include <muduo/net/Channel.h>
 #include "muduo/net/EventLoop.h"
 #include "KcpServer/KcpServerSession.h"
+#include <set>
 
 using namespace muduo;
 using namespace muduo::net;
+
+typedef std::set<IUINT32> DeadSessionSet;
 
 class KcpServer {
 public:
@@ -25,13 +28,17 @@ private:
 	void onUdpTunnelReadable(Timestamp);
 	void onUpdateKcpTimer();
 	void onCheckDeadSessionTimer();
-	void onDeadSessionNotity();
+	void onGetDeadSessionNotity();
+
+	void dispatchKcpPacket(const char* packet, size_t len, sockaddr_in* remote);
+	void notifyPeerException(uint32_t sessId, sockaddr_in* remote);
 
 private:
 	EventLoop loop_;
 	int udpServer_;
 	Channel udpServerChan_;
 	KcpServerSessionMap sessionMap_;
+    DeadSessionSet deadSessionSet_;
 };
 
 

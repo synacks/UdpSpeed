@@ -7,6 +7,7 @@
 #include <errno.h>
 #include "Option.h"
 #include <memory>
+#include <sstream>
 
 extern int g_udpServer;
 
@@ -14,7 +15,7 @@ using namespace std;
 
 
 
-int output(const char *buf, int len, ikcpcb *kcp, void *user)
+int KcpServerSession::output(const char *buf, int len, ikcpcb *kcp, void *user)
 {
 	KcpServerSession* sess = (KcpServerSession*)user;
 	assert(sess);
@@ -31,73 +32,66 @@ int output(const char *buf, int len, ikcpcb *kcp, void *user)
 	while(bytes < 0 && errno == EAGAIN);
 
 	assert(bytes == len);
-	LOG_INFO << "C -> B, bytes: " << bytes;
+	LOG_INFO << sess->getIdStr() << " C -> B, bytes: " << bytes;
 	return (int)bytes;
 }
 
-KcpServerSession::KcpServerSession(EventLoop* loop, IUINT32 id)
-	: client_(make_shared<TcpClient>(loop, InetAddress(g_option.destIp, g_option.destPort), "tcpclient"))
-	, disconnected_(false)
+KcpServerSession::KcpServerSession(EventLoop* loop, IUINT32 id, sockaddr_in* remote)
+	: loop_(loop)
+	, client_(make_shared<TcpClient>(loop, InetAddress(g_option.destIp, g_option.destPort), "tcpclient"))
+	, connecting_(true)
 {
 	kcp_ = ikcp_create(id, this);
 	ikcp_nodelay(kcp_, 1, 10, 1, 1);
 	ikcp_setoutput(kcp_, output);
-	lastActiveTime_ = Timestamp::now();
+    lastTunnelActiveTime_ = Timestamp::now();
+    memcpy(&remoteAddr_, remote, sizeof(remoteAddr_));
 }
 
 KcpServerSession::~KcpServerSession()
 {
 	ikcp_flush(kcp_);
 	ikcp_release(kcp_);
+	LOG_INFO << getIdStr() << " server session destroyed!";
 }
 
 void KcpServerSession::connectSvr()
 {
-	client_->setConnectionCallback(std::bind(&KcpServerSession::onConnection, shared_from_this(), _1));
-	client_->setMessageCallback(std::bind(&KcpServerSession::onMessage, shared_from_this(), _1, _2, _3));
+	client_->setConnectionCallback(std::bind(&KcpServerSession::onConnection, this, _1));
+	client_->setMessageCallback(std::bind(&KcpServerSession::onMessage, this, _1, _2, _3));
 	client_->connect();
+	loop_->runAfter(3, std::bind(&KcpServerSession::onCheckConnection, this));
 }
 
 void KcpServerSession::disconnectFromSvr()
 {
-	client_->setConnectionCallback(defaultConnectionCallback);
-	client_->setMessageCallback(defaultMessageCallback);
-	client_->disconnect();
-	disconnected_ = true;
+    client_->disconnect();
 }
 
-void KcpServerSession::recvFromTunnel()
+void KcpServerSession::recvFromTunnel(const char* packet, size_t len)
 {
-	char buf[4096] = {0};
-
-	socklen_t remoteLen = sizeof(remoteAddr_);
-	ssize_t ret = recvfrom(g_udpServer, buf, sizeof(buf), 0, (sockaddr*)&remoteAddr_, &remoteLen);
-	if(ret < 0)
-	{
-		LOG_ERROR << "recv failed, errno: " << errno;
-		return;
-	}
-
-	LOG_INFO << "B -> C, bytes: " << ret;
+	IUINT32 sn = ikcp_getsn(packet, len);
+	LOG_INFO << getIdStr() << " B -> C, bytes: " << len << ", sn: " << sn;
 
 	std::string payload;
-	extractTunnelPayload(std::string(buf, (size_t)ret), payload);
+	extractTunnelPayload(std::string(packet, (size_t)len), payload);
 	if(payload.empty())
 	{
 		LOG_DEBUG << "extract payload from tunnel packet failed";
 		return;
 	}
 
-	lastActiveTime_ = Timestamp::now();
+    lastTunnelActiveTime_ = Timestamp::now();
 
-	if(conn_)
+    TcpConnectionPtr conn = client_->connection();
+	if(conn)
 	{
 		while(!payloadList_.empty())
 		{
-			conn_->send(payloadList_.front());
+			conn->send(payloadList_.front());
 			payloadList_.pop_front();
 		}
-		conn_->send(payload);
+		conn->send(payload);
 	}
 	else
 	{
@@ -117,7 +111,10 @@ void KcpServerSession::extractTunnelPayload(const std::string &input, std::strin
 	int peekSize = ikcp_peeksize(kcp_);
 	if(peekSize <= 0)
 	{
-		LOG_WARN << "recv found no data";
+	    if(input.length() != 24)
+        {
+            LOG_ERROR << "extract tunnel payload failed!";
+        }
 		return;
 	}
 
@@ -130,18 +127,20 @@ void KcpServerSession::extractTunnelPayload(const std::string &input, std::strin
 	}
 
 	output.resize((size_t)recvRet);
-	LOG_INFO << "C -> D, bytes: " << recvRet;
+	LOG_INFO << getIdStr() << " C -> D, bytes: " << recvRet;
 }
 
 void KcpServerSession::onConnection(const TcpConnectionPtr& conn)
 {
+    connecting_ = false;
 	if(conn->connected())
 	{
-		conn_ = conn;
+	    LOG_TRACE << "connection established!";
+
 		while(!payloadList_.empty())
 		{
-			conn_->send(payloadList_.front());
-			LOG_INFO << "found data cached while connecting dest server"
+			conn->send(payloadList_.front());
+			LOG_TRACE << "found data cached while connecting dest server"
 							 << ", data: " << &payloadList_.front()
 							 << ", length: " << payloadList_.front().length();
 			payloadList_.pop_front();
@@ -149,17 +148,24 @@ void KcpServerSession::onConnection(const TcpConnectionPtr& conn)
 	}
 	else
 	{
-		conn_.reset();
-		disconnected_ = true;
+		LOG_INFO << "server session disconnected!";
 	}
 }
 
+void KcpServerSession::onCheckConnection()
+{
+    if(!client_->connection())
+    {
+        client_->stop();
+        connecting_ = false;
+    }
+}
 
 void KcpServerSession::onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp)
 {
 	int sendRet = ikcp_send(kcp_, buf->peek(), (int)buf->readableBytes());
 	assert(sendRet == 0);
-	LOG_INFO << "D -> C, bytes: " << buf->readableBytes();
+	LOG_INFO << getIdStr() << " D -> C, bytes: " << buf->readableBytes();
 	buf->retrieveAll();
 }
 
@@ -182,10 +188,24 @@ void KcpServerSession::updateKcp()
 
 bool KcpServerSession::isDead()
 {
-	if(disconnected_)
+    if(connecting_)
+    {
+        return false;
+    }
+
+	if(!client_->connection())
 	{
 		return true;
 	}
-	double delta = timeDifference(Timestamp::now(), lastActiveTime_);
-	return delta > 2.0 * 15;
+
+	//与代理端长时间没有交互
+	double delta = timeDifference(Timestamp::now(), lastTunnelActiveTime_);
+	return delta > 1.0 * 3600;
+}
+
+string KcpServerSession::getIdStr()
+{
+    ostringstream oss;
+    oss << "[" << this << " " << kcp_->conv << "]";
+    return oss.str();
 }

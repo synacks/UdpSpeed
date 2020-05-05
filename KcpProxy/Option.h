@@ -1,9 +1,8 @@
 //
 // Created by leo on 2/8/19.
 //
-
-#ifndef PROXY_OPTION_H
-#define PROXY_OPTION_H
+#ifndef __KCP_PROXY_OPTION_H__
+#define __KCP_PROXY_OPTION_H__
 
 #include <string>
 #include <stdint.h>
@@ -16,5 +15,4 @@ struct Option
 
 extern Option g_option;
 
-
-#endif //PROXY_OPTION_H
+#endif
