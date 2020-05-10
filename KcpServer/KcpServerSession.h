@@ -18,13 +18,17 @@
 using namespace muduo;
 using namespace muduo::net;
 
+class KcpServerSession;
+typedef std::shared_ptr<KcpServerSession> KcpServerSessionPtr;
+typedef std::function<void(uint32_t)> SessionConnectionLostCallback;
+
 class KcpServerSession : public std::enable_shared_from_this<KcpServerSession>
 {
 public:
 	KcpServerSession(EventLoop* loop, IUINT32 id, const sockaddr_in* remote);
 	~KcpServerSession();
 
-	void connectSvr();
+	void connectSvr(SessionConnectionLostCallback cb);
 	void disconnectSvr();
 	void recvFromTunnel(const char* packet, size_t len);
 	sockaddr_in* getTunnelPeer();
@@ -47,9 +51,10 @@ private:
 	sockaddr_in remoteAddr_;
 	std::list<std::string> payloadList_;
 	Timestamp lastTunnelActiveTime_;
+	SessionConnectionLostCallback connLostCb_;
 
 };
 
-typedef std::shared_ptr<KcpServerSession> KcpServerSessionPtr;
+
 
 #endif //PROXY_KCPSERVERSESSION_H

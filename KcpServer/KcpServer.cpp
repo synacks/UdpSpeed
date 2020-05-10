@@ -124,7 +124,7 @@ void KcpServer::handleControlMessage(const std::string &controlMsg, const sockad
         if(id == 0) { id = id_++; } //id不能为0
         LOG_INFO << "create new kcp session, session id: " << id;
         KcpServerSessionPtr sess = make_shared<KcpServerSession>(&loop_, id, remote);
-        sess->connectSvr();
+        sess->connectSvr(std::bind(&KcpServer::onSessionConnectionLost, this, _1));
         sessionMap_[id] = sess;
         char msg[5] = {RSP_CREATE_SESSION};
         uint32_t idNetOrder = htonl(id);
@@ -137,11 +137,14 @@ void KcpServer::handleControlMessage(const std::string &controlMsg, const sockad
         auto it = sessionMap_.find(id);
         if(it != sessionMap_.end()) {
             it->second->disconnectSvr();
-            sessionMap_.erase(it);
         } else {
             LOG_WARN << "session not found, session id: " << id;
         }
     } else {
         assert(0);
     }
+}
+void KcpServer::onSessionConnectionLost(uint32_t sessId) {
+    log_info << "erase session from sessionMap while session connection lost, id: " << sessId;
+    sessionMap_.erase(sessId);
 }

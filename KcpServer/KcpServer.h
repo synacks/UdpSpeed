@@ -33,6 +33,7 @@ private:
   void dispatchKcpPacket(const char *packet, size_t len, sockaddr_in *remote);
   void notifyPeerException(uint32_t sessId, sockaddr_in *remote);
   void handleControlMessage(const std::string& controlMsg, const sockaddr_in* remote);
+  void onSessionConnectionLost(uint32_t sessId);
 
 private:
   EventLoop loop_;

@@ -18,24 +18,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="82cf2c1d-240e-47c7-8d20-50d09a6ff9eb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/kcp/ControlSession.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/kcp/ControlSession.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EchoClient/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/EchoClient/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/KcpProxy/KcpControlSession.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KcpProxy/KcpControlSession.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/KcpProxy/KcpDataSession.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/KcpProxy/KcpDataSession.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/KcpProxy/KcpDataSession.h" beforeDir="false" afterPath="$PROJECT_DIR$/KcpProxy/KcpDataSession.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/KcpProxy/KcpProxy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/KcpProxy/KcpProxy.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/KcpProxy/KcpProxy.h" beforeDir="false" afterPath="$PROJECT_DIR$/KcpProxy/KcpProxy.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/KcpProxy/KcpTunnel.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/KcpProxy/KcpTunnel.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/KcpServer/KcpServer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/KcpServer/KcpServer.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/KcpServer/KcpServer.h" beforeDir="false" afterPath="$PROJECT_DIR$/KcpServer/KcpServer.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/KcpServer/KcpServerSession.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/KcpServer/KcpServerSession.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/KcpServer/KcpServerSession.h" beforeDir="false" afterPath="$PROJECT_DIR$/KcpServer/KcpServerSession.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/KcpServer/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/KcpServer/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/muduo/base/Logging.h" beforeDir="false" afterPath="$PROJECT_DIR$/muduo/base/Logging.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Test/MuduoStudy.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Test/MuduoStudy.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,7 +127,7 @@
       <workItem from="1588863515789" duration="5216000" />
       <workItem from="1588946634114" duration="4443000" />
       <workItem from="1589072617913" duration="17333000" />
-      <workItem from="1589122528291" duration="317000" />
+      <workItem from="1589122528291" duration="2262000" />
     </task>
     <servers />
   </component>
@@ -186,10 +174,10 @@
       <screen x="76" y="0" width="1844" height="1080" />
     </state>
     <state x="654" y="250" width="672" height="677" key="run.anything.popup/76.0.1844.1080@76.0.1844.1080" timestamp="1588487965538" />
-    <state x="661" y="235" width="672" height="678" key="search.everywhere.popup" timestamp="1589120144530">
+    <state x="661" y="235" width="672" height="678" key="search.everywhere.popup" timestamp="1589124227610">
       <screen x="76" y="0" width="1844" height="1080" />
     </state>
-    <state x="661" y="235" width="672" height="678" key="search.everywhere.popup/76.0.1844.1080@76.0.1844.1080" timestamp="1589120144530" />
+    <state x="661" y="235" width="672" height="678" key="search.everywhere.popup/76.0.1844.1080@76.0.1844.1080" timestamp="1589124227610" />
   </component>
   <component name="masterDetails">
     <states>

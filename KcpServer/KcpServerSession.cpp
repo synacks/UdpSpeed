@@ -55,7 +55,7 @@ KcpServerSession::~KcpServerSession() {
     ikcp_release(kcp_);
 }
 
-void KcpServerSession::connectSvr() {
+void KcpServerSession::connectSvr(SessionConnectionLostCallback cb) {
     //用share_from_this的原因是：如果用this，Session对象会早于该回调被析构
     client_->setConnectionCallback(std::bind(&KcpServerSession::onConnection, shared_from_this(), _1));
     client_->setMessageCallback(std::bind(&KcpServerSession::onMessage, shared_from_this(), _1, _2, _3));
@@ -130,6 +130,7 @@ void KcpServerSession::onConnection(const TcpConnectionPtr &conn) {
         }
     } else {
         LOG_INFO << "connection disconnected from " << conn->peerAddress().toIpPort();
+        connLostCb_(kcp_->conv);
     }
 }
 
@@ -138,6 +139,7 @@ void KcpServerSession::onCheckConnection() {
     if(client_) {
         if(!client_->connection()) {
             client_.reset();
+            connLostCb_(kcp_->conv);
         }
     }
 }

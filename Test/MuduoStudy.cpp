@@ -15,7 +15,7 @@ public:
     ClientSession(EventLoop* loop)
         : loop_(loop)
     {
-        InetAddress remote("127.0.0.1", (uint16_t)9999);
+        InetAddress remote("127.0.0.1", (uint16_t)9998);
         client_ = std::make_shared<TcpClient>(loop_, remote, "tcpcli");
     }
 
@@ -43,8 +43,11 @@ public:
     }
 
     void onCheckConnection() {
-
-
+        if(client_) {
+            if(!client_->connection()) {
+                client_.reset();
+            }
+        }
     }
 
     void onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp ts) {
@@ -76,7 +79,7 @@ int main() {
     EventLoop loop;
     g_sess = std::make_shared<ClientSession>(&loop);
     g_sess->connectSvr();
-    loop.runAfter(1, std::bind(&destroySession));
+    //loop.runAfter(1, std::bind(&destroySession));
     //loop.runAfter(3, std::bind(&exitLoop, &loop));
     loop.loop();
 
