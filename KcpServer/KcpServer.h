@@ -8,6 +8,7 @@
 #include <muduo/net/Channel.h>
 #include "muduo/net/EventLoop.h"
 #include "KcpServer/KcpServerSession.h"
+#include "kcp/ControlSession.h"
 #include <set>
 
 using namespace muduo;
@@ -17,31 +18,28 @@ typedef std::set<IUINT32> DeadSessionSet;
 
 class KcpServer {
 public:
-	KcpServer();
-	~KcpServer();
+  KcpServer();
+  ~KcpServer();
 
 public:
-	void run();
+  void run();
 
 private:
-	int  initUdpTunnel();
-	void onUdpTunnelReadable(Timestamp);
-	void onUpdateKcpTimer();
-	void onCheckDeadSessionTimer();
-	void onGetDeadSessionNotity();
+  int createUdpTunnel();
+  void onUdpTunnelReadable(Timestamp);
+  void onUpdateKcpTimer();
+  void onCheckDeadSessionTimer();
 
-	void dispatchKcpPacket(const char* packet, size_t len, sockaddr_in* remote);
-	void notifyPeerException(uint32_t sessId, sockaddr_in* remote);
+  void dispatchKcpPacket(const char *packet, size_t len, sockaddr_in *remote);
+  void notifyPeerException(uint32_t sessId, sockaddr_in *remote);
+  void handleControlMessage(const std::string& controlMsg, const sockaddr_in* remote);
 
 private:
-	EventLoop loop_;
-	int udpServer_;
-	Channel udpServerChan_;
-	KcpServerSessionMap sessionMap_;
-    DeadSessionSet deadSessionSet_;
+  EventLoop loop_;
+  std::shared_ptr<Channel> udpServerChan_;
+  std::map<IUINT32, KcpServerSessionPtr> sessionMap_;
+  ControlSession controlSess_;
+  uint32_t id_ = 1;
 };
-
-
-
 
 #endif //PROXY_KCPSERVER_H

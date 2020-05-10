@@ -27,6 +27,7 @@ public:
 
 	void update();
 	IUINT32 id() {return id_;}
+	void forceConnClose();
 
 private:
 	ikcpcb* kcp_ = nullptr;

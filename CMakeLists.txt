@@ -25,7 +25,7 @@ set(SOURCE_FILES
         kcp/ikcp.c
         kcp/ikcp.h
         ${MUDUO_SRCS}
-        ${KCPPROXY_SRCS} KcpProxy/Option.h KcpProxy/KcpControlSession.cpp KcpProxy/KcpControlSession.h)
+        ${KCPPROXY_SRCS} KcpProxy/Option.h kcp/ControlSession.cpp kcp/ControlSession.h)
 
 add_executable(proxy ${SOURCE_FILES})
 
@@ -43,7 +43,7 @@ add_executable(server ${KCPSERVER_SRCS}
         KcpServer/KcpServer.cpp
         KcpServer/KcpServer.h
         KcpServer/main.cpp
-        KcpServer/KcpServerSession.cpp KcpServer/KcpServerSession.h KcpServer/Option.h)
+        KcpServer/KcpServerSession.cpp KcpServer/KcpServerSession.h KcpServer/Option.h kcp/ControlSession.cpp kcp/ControlSession.h)
 target_link_libraries(server pthread)
 
 add_executable(echoserver
@@ -66,3 +66,6 @@ target_link_libraries(downcli pthread)
 
 add_executable(downsvr ${MUDUO_SRCS} DownloadTest/DownloadServer.cpp)
 target_link_libraries(downsvr pthread)
+
+add_executable(ms ${MUDUO_SRCS} Test/MuduoStudy.cpp)
+target_link_libraries(ms pthread)

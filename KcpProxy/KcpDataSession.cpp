@@ -127,3 +127,8 @@ int KcpDataSession::recvFromTunnel(const std::string &input)
 	LOG_INFO << "[" << id_ << "] B -> A, bytes: " << len << ", content: " << output.c_str();
 	return 1;
 }
+void KcpDataSession::forceConnClose() {
+  TcpConnectionPtr connPtr = conn_.lock();
+  assert(connPtr);
+  connPtr->forceClose();
+}

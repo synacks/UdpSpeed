@@ -141,6 +141,13 @@ T* CheckNotNull(Logger::SourceFile file, int line, const char *names, T* ptr)
   return ptr;
 }
 
+#define log_info LOG_INFO
+#define log_warn LOG_WARN
+#define log_error LOG_ERROR
+#define log_trace LOG_TRACE
+#define log_debug LOG_DEBUG
+#define log_fatal LOG_FATAL
+
 }  // namespace muduo
 
 #endif  // MUDUO_BASE_LOGGING_H
